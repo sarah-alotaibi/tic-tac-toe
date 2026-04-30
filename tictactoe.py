@@ -10,23 +10,22 @@ gameRunning = True
 
 def printBoard(board):
     print(board [0] + "|" + board[1] + "|" + board[2])
-    print("------")
+    # print("------")
     print(board [3] + "|" + board[4] + "|" + board[5])
-    print("------")
+    # print("------")
     print(board [6] + "|" + board[7] + "|" + board[8])
-    print("------")
+    # print("------")
 
 def playerInput(board):
-    inp = int(input("enter a number 1-9:"))
-    if inp >= 1 and inp <= 9 and board[inp-1] == "-":
+    inp = int(input("enter a number 1-9: "))
+    if 1 <= inp <= 9 and board[inp-1] == "-":
         board[inp-1] = currentPlayer
-
     else:
-        print("theres a player in that spot!")
+        print("there\'s a player in that spot!")
 
 
 # check for win or tie 
-def chechHorizontle(board): 
+def chechHorizontal( board ):
     global winner
     if board[0] == board[1] == board[2] and board[1] != "-":
         winner = board[0]
@@ -38,7 +37,7 @@ def chechHorizontle(board):
         winner = board[6]
         return True 
     
-def checkRow(board):
+def checkColumn( board ):
     global winner
     if board[0] == board[3] == board[6] and board[0] != "-":
         winner = board[0]
@@ -70,8 +69,10 @@ def chechTie(board):
 
 
 def checkWin():
-    if checkDiag(board) or chechHorizontle(board) or checkRow(board):
+    global gameRunning
+    if checkDiag(board) or chechHorizontal( board ) or checkColumn( board ):
         print(f"the winner is {winner}")
+        gameRunning = False
 
 
 
@@ -92,16 +93,54 @@ def computer(board):
             switchPlayer()
 
 
-    
 
-while gameRunning:
-    printBoard(board)
-    playerInput(board)
-    checkWin()
-    chechTie(board)
-    switchPlayer()
-    computer(board)
-    checkWin()
-    chechTie(board)
+
+def run_game_1() :
+    while gameRunning :
+        printBoard( board )
+        playerInput( board )
+        checkWin()
+        chechTie( board )
+        switchPlayer()
+        computer( board )
+        checkWin()
+        chechTie( board )
+
+
+def computer_2( board ) :
+    while True :
+        position = random.randint( 0, 8 )
+        if board[ position ] == "-":
+            board[ position ] = "O"
+
+            break
+
+
+def run_game_2() :
+    while gameRunning :
+        # One iteration per one move - human's or computer's.
+
+        printBoard( board )
+
+        if currentPlayer == 'X' :
+            playerInput( board )
+        elif currentPlayer == 'O' :
+            print( '\nComputer:' )
+            computer_2( board )
+        else :
+            print( 'error : current player symbol is not X or O' )
+
+            break
+
+        checkWin()
+        chechTie( board )
+        switchPlayer()
+
+    printBoard( board )
+
+
+if __name__ == '__main__' :
+    run_game_1()
+    # run_game_2()
 
 
